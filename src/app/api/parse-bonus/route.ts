@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { Cerebras } from '@cerebras/cerebras_cloud_sdk';
+import { NextResponse } from "next/server";
+import { Cerebras } from "@cerebras/cerebras_cloud_sdk";
 
 const client = new Cerebras({
   apiKey: process.env.CEREBRAS_API_KEY,
@@ -110,16 +110,18 @@ Bank bonus description to parse:
 
 function cleanJsonResponse(response: string): string {
   // Remove markdown code blocks if present
-  let cleaned = response.replace(/```(?:json)?\n?/g, '');
-  
+  let cleaned = response.replace(/```(?:json)?\n?/g, "");
+
   // Remove any whitespace before first { and after last }
   cleaned = cleaned.trim();
-  
+
   // If the response doesn't start with { and end with }, it's invalid
-  if (!cleaned.startsWith('{') || !cleaned.endsWith('}')) {
-    throw new Error('Invalid JSON format: Response must start with { and end with }');
+  if (!cleaned.startsWith("{") || !cleaned.endsWith("}")) {
+    throw new Error(
+      "Invalid JSON format: Response must start with { and end with }"
+    );
   }
-  
+
   return cleaned;
 }
 
@@ -129,7 +131,7 @@ export async function POST(request: Request) {
 
     if (!text) {
       return NextResponse.json(
-        { error: 'Missing bonus text' },
+        { error: "Missing bonus text" },
         { status: 400 }
       );
     }
@@ -137,38 +139,37 @@ export async function POST(request: Request) {
     // Combine the template with the input text
     const fullPrompt = `${PROMPT_TEMPLATE}${text}`;
 
-    const completion = await client.chat.completions.create({
+    const completion = (await client.chat.completions.create({
       model: "llama-3.3-70b",
-      messages: [
-        { role: "user", content: fullPrompt }
-      ],
+      messages: [{ role: "user", content: fullPrompt }],
       temperature: 0.1,
-      max_tokens: 1000
-    });
+      max_tokens: 1000,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    })) as any;
 
     const jsonStr = completion.choices[0].message.content;
-    
+
     try {
       // Clean the response before parsing
       const cleanedJsonStr = cleanJsonResponse(jsonStr);
       const parsedBonus = JSON.parse(cleanedJsonStr);
       return NextResponse.json(parsedBonus);
     } catch (parseError) {
-      console.error('JSON Parse Error:', parseError);
-      console.error('Raw LLM Response:', jsonStr);
-      console.error('Cleaned Response:', cleanJsonResponse(jsonStr));
+      console.error("JSON Parse Error:", parseError);
+      console.error("Raw LLM Response:", jsonStr);
+      console.error("Cleaned Response:", cleanJsonResponse(jsonStr));
       return NextResponse.json(
-        { 
-          error: 'Invalid JSON returned from LLM',
-          rawResponse: jsonStr
-        }, 
+        {
+          error: "Invalid JSON returned from LLM",
+          rawResponse: jsonStr,
+        },
         { status: 422 }
       );
     }
   } catch (error) {
-    console.error('Error parsing bonus:', error);
+    console.error("Error parsing bonus:", error);
     return NextResponse.json(
-      { error: 'Failed to parse bonus text' },
+      { error: "Failed to parse bonus text" },
       { status: 400 }
     );
   }
