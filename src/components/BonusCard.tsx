@@ -1,5 +1,5 @@
 import React from "react";
-import { Bonus } from "../types/types";
+import { Bonus } from "../../types/types";
 import {
   calculateProgress,
   getRemainingDays,
@@ -89,9 +89,9 @@ export default function BonusCard({
           <span className="text-2xl font-bold text-green-600">
             ${bonus.amount}
           </span>
-          <Badge variant={completed ? "success" : "default"}>
+          <Badge variant={completed ? "secondary" : "default"}>
             {completed ? "Completed" : "In Progress"}
-          </Badge>
+          </Badge>{" "}
         </div>
         <Progress value={progress * 100} className="w-full" />
         <div className="grid grid-cols-2 gap-4">
