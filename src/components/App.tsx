@@ -1,5 +1,5 @@
-import React from 'react';
-import Dashboard from './components/Dashboard';
+import React from "react";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -12,4 +12,3 @@ function App() {
 }
 
 export default App;
-
