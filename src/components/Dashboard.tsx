@@ -5,11 +5,6 @@ import { Bonus } from "../../types/types";
 import BonusCard from "./BonusCard";
 import AddBonusForm from "./AddBonusForm";
 import { ThemeToggle } from "./ui/theme-toggle";
-import {
-  calculateProgress,
-  getRemainingDays,
-  isCompleted,
-} from "../../utils/bonusUtils";
 
 export default function Dashboard() {
   const [bonuses, setBonuses] = useState<Bonus[]>([]);
