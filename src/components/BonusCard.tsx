@@ -22,7 +22,6 @@ import {
   DollarSign,
   AlertCircle,
   CheckCircle2,
-  XCircle,
   Trash2,
 } from "lucide-react";
 
