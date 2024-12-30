@@ -1,11 +1,30 @@
-import React from 'react';
-import { Bonus } from '../types/types';
-import { calculateProgress, getRemainingDays, isCompleted, canWithdraw, calculateRemainingAmount } from '../utils/bonusUtils';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { CalendarDays, DollarSign, AlertCircle, CheckCircle2, XCircle, Trash2 } from 'lucide-react'
+import React from "react";
+import { Bonus } from "../types/types";
+import {
+  calculateProgress,
+  getRemainingDays,
+  isCompleted,
+  canWithdraw,
+  calculateRemainingAmount,
+} from "../../utils/bonusUtils";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import {
+  CalendarDays,
+  DollarSign,
+  AlertCircle,
+  CheckCircle2,
+  XCircle,
+  Trash2,
+} from "lucide-react";
 
 interface BonusCardProps {
   bonus: Bonus;
@@ -13,7 +32,11 @@ interface BonusCardProps {
   onDelete: (id: string) => void;
 }
 
-export default function BonusCard({ bonus, onUpdate, onDelete }: BonusCardProps) {
+export default function BonusCard({
+  bonus,
+  onUpdate,
+  onDelete,
+}: BonusCardProps) {
   const progress = calculateProgress(bonus);
   const remainingDays = getRemainingDays(bonus);
   const completed = isCompleted(bonus);
@@ -21,11 +44,14 @@ export default function BonusCard({ bonus, onUpdate, onDelete }: BonusCardProps)
   const remainingAmount = calculateRemainingAmount(bonus);
 
   const addDeposit = () => {
-    const amount = parseFloat(prompt('Enter deposit amount:') || '0');
+    const amount = parseFloat(prompt("Enter deposit amount:") || "0");
     if (amount > 0) {
       const updatedBonus = {
         ...bonus,
-        deposits: [...bonus.deposits, { amount, date: new Date().toISOString() }]
+        deposits: [
+          ...bonus.deposits,
+          { amount, date: new Date().toISOString() },
+        ],
       };
       onUpdate(updatedBonus);
     }
@@ -37,18 +63,33 @@ export default function BonusCard({ bonus, onUpdate, onDelete }: BonusCardProps)
         <CardTitle className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span>{bonus.bankName}</span>
-            <Badge variant={bonus.accountType === 'Checking' ? 'default' : bonus.accountType === 'Savings' ? 'secondary' : 'outline'}>
+            <Badge
+              variant={
+                bonus.accountType === "Checking"
+                  ? "default"
+                  : bonus.accountType === "Savings"
+                  ? "secondary"
+                  : "outline"
+              }
+            >
               {bonus.accountType}
             </Badge>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => onDelete(bonus.id)} className="text-red-500 hover:text-red-700">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onDelete(bonus.id)}
+            className="text-red-500 hover:text-red-700"
+          >
             <Trash2 className="h-4 w-4" />
           </Button>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-2xl font-bold text-green-600">${bonus.amount}</span>
+          <span className="text-2xl font-bold text-green-600">
+            ${bonus.amount}
+          </span>
           <Badge variant={completed ? "success" : "default"}>
             {completed ? "Completed" : "In Progress"}
           </Badge>
@@ -63,9 +104,7 @@ export default function BonusCard({ bonus, onUpdate, onDelete }: BonusCardProps)
           </div>
           <div className="flex items-center">
             <CalendarDays className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">
-              {remainingDays} days left
-            </span>
+            <span className="text-sm">{remainingDays} days left</span>
           </div>
         </div>
         <div className="flex items-center">
@@ -87,4 +126,3 @@ export default function BonusCard({ bonus, onUpdate, onDelete }: BonusCardProps)
     </Card>
   );
 }
-
