@@ -58,8 +58,7 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <AddBonusForm onAddBonus={addBonus} />
+      <div className="flex justify-end mb-6">
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
