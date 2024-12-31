@@ -25,14 +25,13 @@ type SortOption =
   | "alpha-desc";
 
 export default function Dashboard() {
-  const [bonuses, setBonuses] = useState<Bonus[]>([]);
-
-  useEffect(() => {
-    const storedBonuses = localStorage.getItem("bankBonuses");
-    if (storedBonuses) {
-      setBonuses(JSON.parse(storedBonuses));
+  const [bonuses, setBonuses] = useState<Bonus[]>(() => {
+    if (typeof window !== "undefined") {
+      const storedBonuses = localStorage.getItem("bankBonuses");
+      return storedBonuses ? JSON.parse(storedBonuses) : [];
     }
-  }, []);
+    return [];
+  });
   const [sortBy, setSortBy] = useState<SortOption>("recency");
 
   useEffect(() => {
