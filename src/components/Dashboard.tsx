@@ -7,13 +7,14 @@ import BonusCard from "./BonusCard";
 import AddBonusForm from "./AddBonusForm";
 import { ThemeToggle } from "./ui/theme-toggle";
 import { Button } from "./ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CheckCircle2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 type SortOption =
   | "recency"
@@ -65,44 +66,59 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 size="sm"
-                className="flex items-center gap-1"
+                className="flex items-center gap-2"
               >
                 Sort by
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 opacity-50" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setSortBy("recency")}>
+            <DropdownMenuContent className="w-48">
+              <DropdownMenuItem 
+                className="flex items-center justify-between"
+                onClick={() => setSortBy("recency")}
+              >
                 Recency
+                {sortBy === "recency" && <CheckCircle2 className="h-4 w-4" />}
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem
+                className="flex items-center justify-between"
                 onClick={() =>
-                  setSortBy(
-                    sortBy === "amount-asc" ? "amount-desc" : "amount-asc"
-                  )
+                  setSortBy(sortBy === "amount-asc" ? "amount-desc" : "amount-asc")
                 }
               >
-                Amount{" "}
-                {sortBy.startsWith("amount") &&
-                  (sortBy.endsWith("asc") ? "↑" : "↓")}
+                <span>Amount</span>
+                {sortBy.startsWith("amount") && (
+                  <span className="text-muted-foreground">
+                    {sortBy.endsWith("asc") ? "↑" : "↓"}
+                  </span>
+                )}
               </DropdownMenuItem>
               <DropdownMenuItem
+                className="flex items-center justify-between"
                 onClick={() =>
                   setSortBy(sortBy === "days-asc" ? "days-desc" : "days-asc")
                 }
               >
-                Days Left{" "}
-                {sortBy.startsWith("days") &&
-                  (sortBy.endsWith("asc") ? "↑" : "↓")}
+                <span>Days Left</span>
+                {sortBy.startsWith("days") && (
+                  <span className="text-muted-foreground">
+                    {sortBy.endsWith("asc") ? "↑" : "↓"}
+                  </span>
+                )}
               </DropdownMenuItem>
               <DropdownMenuItem
+                className="flex items-center justify-between"
                 onClick={() =>
                   setSortBy(sortBy === "alpha-asc" ? "alpha-desc" : "alpha-asc")
                 }
               >
-                Alphabetical{" "}
-                {sortBy.startsWith("alpha") &&
-                  (sortBy.endsWith("asc") ? "↑" : "↓")}
+                <span>Alphabetical</span>
+                {sortBy.startsWith("alpha") && (
+                  <span className="text-muted-foreground">
+                    {sortBy.endsWith("asc") ? "↑" : "↓"}
+                  </span>
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
