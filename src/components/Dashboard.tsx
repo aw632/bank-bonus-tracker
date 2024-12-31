@@ -13,13 +13,20 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@radix-ui/react-dropdown-menu";
 
-type SortOption = 'recency' | 'amount-asc' | 'amount-desc' | 'days-asc' | 'days-desc' | 'alpha-asc' | 'alpha-desc';
+type SortOption =
+  | "recency"
+  | "amount-asc"
+  | "amount-desc"
+  | "days-asc"
+  | "days-desc"
+  | "alpha-asc"
+  | "alpha-desc";
 
 export default function Dashboard() {
   const [bonuses, setBonuses] = useState<Bonus[]>([]);
-  const [sortBy, setSortBy] = useState<SortOption>('recency');
+  const [sortBy, setSortBy] = useState<SortOption>("recency");
 
   useEffect(() => {
     const storedBonuses = localStorage.getItem("bankBonuses");
@@ -55,23 +62,47 @@ export default function Dashboard() {
         <div className="flex gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="flex items-center gap-1">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1"
+              >
                 Sort by
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setSortBy('recency')}>
+              <DropdownMenuItem onClick={() => setSortBy("recency")}>
                 Recency
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy(sortBy === 'amount-asc' ? 'amount-desc' : 'amount-asc')}>
-                Amount {sortBy.startsWith('amount') && (sortBy.endsWith('asc') ? '↑' : '↓')}
+              <DropdownMenuItem
+                onClick={() =>
+                  setSortBy(
+                    sortBy === "amount-asc" ? "amount-desc" : "amount-asc"
+                  )
+                }
+              >
+                Amount{" "}
+                {sortBy.startsWith("amount") &&
+                  (sortBy.endsWith("asc") ? "↑" : "↓")}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy(sortBy === 'days-asc' ? 'days-desc' : 'days-asc')}>
-                Days Left {sortBy.startsWith('days') && (sortBy.endsWith('asc') ? '↑' : '↓')}
+              <DropdownMenuItem
+                onClick={() =>
+                  setSortBy(sortBy === "days-asc" ? "days-desc" : "days-asc")
+                }
+              >
+                Days Left{" "}
+                {sortBy.startsWith("days") &&
+                  (sortBy.endsWith("asc") ? "↑" : "↓")}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy(sortBy === 'alpha-asc' ? 'alpha-desc' : 'alpha-asc')}>
-                Alphabetical {sortBy.startsWith('alpha') && (sortBy.endsWith('asc') ? '↑' : '↓')}
+              <DropdownMenuItem
+                onClick={() =>
+                  setSortBy(sortBy === "alpha-asc" ? "alpha-desc" : "alpha-asc")
+                }
+              >
+                Alphabetical{" "}
+                {sortBy.startsWith("alpha") &&
+                  (sortBy.endsWith("asc") ? "↑" : "↓")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -80,33 +111,38 @@ export default function Dashboard() {
       </div>
       <AddBonusForm onAddBonus={addBonus} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        {[...bonuses].sort((a, b) => {
-          switch (sortBy) {
-            case 'recency':
-              return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
-            case 'amount-asc':
-              return a.amount - b.amount;
-            case 'amount-desc':
-              return b.amount - a.amount;
-            case 'days-asc':
-              return getRemainingDays(a) - getRemainingDays(b);
-            case 'days-desc':
-              return getRemainingDays(b) - getRemainingDays(a);
-            case 'alpha-asc':
-              return a.bankName.localeCompare(b.bankName);
-            case 'alpha-desc':
-              return b.bankName.localeCompare(a.bankName);
-            default:
-              return 0;
-          }
-        }).map((bonus) => (
-          <BonusCard
-            key={bonus.id}
-            bonus={bonus}
-            onUpdate={updateBonus}
-            onDelete={deleteBonus}
-          />
-        ))}
+        {[...bonuses]
+          .sort((a, b) => {
+            switch (sortBy) {
+              case "recency":
+                return (
+                  new Date(b.startDate).getTime() -
+                  new Date(a.startDate).getTime()
+                );
+              case "amount-asc":
+                return a.amount - b.amount;
+              case "amount-desc":
+                return b.amount - a.amount;
+              case "days-asc":
+                return getRemainingDays(a) - getRemainingDays(b);
+              case "days-desc":
+                return getRemainingDays(b) - getRemainingDays(a);
+              case "alpha-asc":
+                return a.bankName.localeCompare(b.bankName);
+              case "alpha-desc":
+                return b.bankName.localeCompare(a.bankName);
+              default:
+                return 0;
+            }
+          })
+          .map((bonus) => (
+            <BonusCard
+              key={bonus.id}
+              bonus={bonus}
+              onUpdate={updateBonus}
+              onDelete={deleteBonus}
+            />
+          ))}
       </div>
     </div>
   );
