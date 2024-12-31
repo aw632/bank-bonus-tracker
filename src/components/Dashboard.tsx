@@ -72,9 +72,11 @@ export default function Dashboard() {
                 <ChevronDown className="h-4 w-4 opacity-50" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48">
+            <DropdownMenuContent className="w-48 border-2">
               <DropdownMenuItem
-                className="flex items-center justify-between"
+                className={`flex items-center justify-between ${
+                  sortBy === "recency" ? "bg-accent" : ""
+                }`}
                 onClick={() => setSortBy("recency")}
               >
                 Recency
@@ -82,7 +84,9 @@ export default function Dashboard() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="flex items-center justify-between"
+                className={`flex items-center justify-between ${
+                  sortBy.startsWith("amount") ? "bg-accent" : ""
+                }`}
                 onClick={() =>
                   setSortBy(
                     sortBy === "amount-asc" ? "amount-desc" : "amount-asc"
@@ -97,7 +101,9 @@ export default function Dashboard() {
                 )}
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="flex items-center justify-between"
+                className={`flex items-center justify-between ${
+                  sortBy.startsWith("days") ? "bg-accent" : ""
+                }`}
                 onClick={() =>
                   setSortBy(sortBy === "days-asc" ? "days-desc" : "days-asc")
                 }
@@ -110,7 +116,9 @@ export default function Dashboard() {
                 )}
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="flex items-center justify-between"
+                className={`flex items-center justify-between ${
+                  sortBy.startsWith("alpha") ? "bg-accent" : ""
+                }`}
                 onClick={() =>
                   setSortBy(sortBy === "alpha-asc" ? "alpha-desc" : "alpha-asc")
                 }
