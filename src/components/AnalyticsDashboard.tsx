@@ -11,7 +11,7 @@ export default function AnalyticsDashboard() {
   // Calculate analytics data
   const totalBonuses = bonuses.length;
   const totalAmount = bonuses
-    .filter(bonus => bonus.deposits.length >= (bonus.requirements.deposits.count || 1))
+    .filter(bonus => isCompleted(bonus))
     .reduce((sum, bonus) => sum + bonus.amount, 0);
   const totalDeposits = bonuses.reduce((sum, bonus) => {
     const { type, totalAmount, eachAmount, count } = bonus.requirements.deposits;
