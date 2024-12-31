@@ -58,7 +58,8 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-end mb-6">
+      <div className="flex justify-between items-center mb-6">
+        <AddBonusForm onAddBonus={addBonus} />
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -123,7 +124,7 @@ export default function Dashboard() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      <AddBonusForm onAddBonus={addBonus} />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {[...bonuses]
           .sort((a, b) => {
