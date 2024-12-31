@@ -25,18 +25,19 @@ type SortOption =
   | "alpha-desc";
 
 export default function Dashboard() {
-  const [bonuses, setBonuses] = useState<Bonus[]>([]);
+  const [bonuses, setBonuses] = useState<Bonus[]>(() => {
+    if (typeof window !== "undefined") {
+      const storedBonuses = localStorage.getItem("bankBonuses");
+      return storedBonuses ? JSON.parse(storedBonuses) : [];
+    }
+    return [];
+  });
   const [sortBy, setSortBy] = useState<SortOption>("recency");
 
   useEffect(() => {
-    const storedBonuses = localStorage.getItem("bankBonuses");
-    if (storedBonuses) {
-      setBonuses(JSON.parse(storedBonuses));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("bankBonuses", JSON.stringify(bonuses));
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("bankBonuses", JSON.stringify(bonuses));
   }, [bonuses]);
 
   const addBonus = (newBonus: Bonus) => {
