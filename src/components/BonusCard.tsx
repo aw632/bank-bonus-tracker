@@ -24,6 +24,7 @@ import {
   AlertCircle,
   CheckCircle2,
   Trash2,
+  Check,
 } from "lucide-react";
 
 interface BonusCardProps {
@@ -140,7 +141,7 @@ export default function BonusCard({ bonus }: BonusCardProps) {
               size="sm"
               className="px-3"
             >
-              ✓
+              <Check className="h-4 w-4" />
             </Button>
           </div>
         ) : (
