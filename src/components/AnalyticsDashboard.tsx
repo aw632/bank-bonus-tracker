@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { isCompleted } from "../../utils/bonusUtils";
+import { Pie, PieChart, Label } from "recharts";
 
 export default function AnalyticsDashboard() {
   const { bonuses } = useBonuses();
@@ -29,7 +30,7 @@ export default function AnalyticsDashboard() {
       <h1 className="text-3xl font-bold mb-8">Analytics Dashboard</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Card>
+        <Card className="col-span-2 md:col-span-1">
           <CardHeader>
             <CardTitle>Total Bonuses</CardTitle>
           </CardHeader>
@@ -70,7 +71,49 @@ export default function AnalyticsDashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Bonus Status Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center">
+            <PieChart width={300} height={300}>
+              <Pie
+                data={[
+                  { 
+                    name: 'Completed', 
+                    value: bonuses.filter(bonus => isCompleted(bonus)).length,
+                    fill: 'hsl(var(--chart-1))'
+                  },
+                  { 
+                    name: 'In Progress', 
+                    value: bonuses.filter(bonus => !isCompleted(bonus) && bonus.deposits.length > 0).length,
+                    fill: 'hsl(var(--chart-2))'
+                  },
+                  { 
+                    name: 'Not Started', 
+                    value: bonuses.filter(bonus => bonus.deposits.length === 0).length,
+                    fill: 'hsl(var(--chart-3))'
+                  }
+                ]}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={100}
+                paddingAngle={5}
+                stroke="none"
+              >
+                <Label
+                  value={bonuses.length}
+                  position="center"
+                  className="text-2xl font-bold"
+                />
+              </Pie>
+            </PieChart>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle>Bonus Progress</CardTitle>
