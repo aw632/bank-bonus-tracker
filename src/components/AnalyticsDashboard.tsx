@@ -77,15 +77,16 @@ export default function AnalyticsDashboard() {
           <CardHeader>
             <CardTitle>Bonus Status Breakdown</CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-center">
+          <CardContent className="flex justify-center items-center h-[300px]">
             <ChartContainer
               config={{
                 Completed: { color: 'hsl(var(--chart-1))' },
                 'In Progress': { color: 'hsl(var(--chart-2))' },
                 'Not Started': { color: 'hsl(var(--chart-3))' }
               }}
+              className="w-full h-full"
             >
-              <PieChart width={300} height={300}>
+              <PieChart width={300} height={300} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                 <ChartTooltip
                   cursor={false}
                   content={<ChartTooltipContent hideLabel />}
