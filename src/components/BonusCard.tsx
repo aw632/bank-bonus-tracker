@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useBonuses } from "@/context/BonusContext";
 import { Bonus } from "../../types/types";
 import {
@@ -120,9 +120,9 @@ export default function BonusCard({ bonus }: BonusCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button 
-          onClick={addDeposit} 
-          className="w-full bg-green-500 hover:bg-green-600" 
+        <Button
+          onClick={addDeposit}
+          className="w-full bg-green-500 hover:bg-green-600"
           disabled={completed}
         >
           Add Deposit
