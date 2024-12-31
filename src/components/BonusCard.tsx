@@ -138,7 +138,7 @@ export default function BonusCard({ bonus }: BonusCardProps) {
             />
             <Button
               onClick={handleAddDeposit}
-              className="rounded-l-none px-3 h-[2.6875rem]"
+              className="rounded-l-none px-3 h-[2.6875rem] bg-background hover:bg-background/90 text-foreground border border-input"
             >
               <Check className="h-4 w-4" />
             </Button>
@@ -146,7 +146,7 @@ export default function BonusCard({ bonus }: BonusCardProps) {
         ) : (
           <Button
             onClick={() => setIsAddingDeposit(true)}
-            className="w-full"
+            className="w-full bg-background hover:bg-background/90 text-foreground border border-input"
             disabled={completed}
           >
             Add Deposit
