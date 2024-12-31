@@ -15,16 +15,7 @@ export default function AnalyticsDashboard() {
     .filter(bonus => isCompleted(bonus))
     .reduce((sum, bonus) => sum + bonus.amount, 0);
   const totalDeposits = bonuses.reduce((sum, bonus) => {
-    const { type, totalAmount, eachAmount, count } = bonus.requirements.deposits;
-    
-    if (type === 'total') {
-      return sum + (totalAmount || 0);
-    } else if (type === 'each') {
-      return sum + ((eachAmount || 0) * (count || 0));
-    } else if (type === 'both') {
-      return sum + (totalAmount || 0) + ((eachAmount || 0) * (count || 0));
-    }
-    return sum;
+    return sum + bonus.deposits.reduce((depositSum, deposit) => depositSum + deposit.amount, 0);
   }, 0);
 
   // Calculate annualized return rate (simplified example)
@@ -64,7 +55,7 @@ export default function AnalyticsDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${totalDeposits.toLocaleString()}</div>
-            <p className="text-sm text-muted-foreground">Required</p>
+            <p className="text-sm text-muted-foreground">Deposited</p>
           </CardContent>
         </Card>
 
