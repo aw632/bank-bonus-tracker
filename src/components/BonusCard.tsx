@@ -1,4 +1,5 @@
 import React from "react";
+import { useBonuses } from "@/context/BonusContext";
 import { Bonus } from "../../types/types";
 import {
   calculateProgress,
@@ -23,6 +24,7 @@ import {
   AlertCircle,
   CheckCircle2,
   Trash2,
+  Check,
 } from "lucide-react";
 
 interface BonusCardProps {
@@ -31,19 +33,19 @@ interface BonusCardProps {
   onDelete: (id: string) => void;
 }
 
-export default function BonusCard({
-  bonus,
-  onUpdate,
-  onDelete,
-}: BonusCardProps) {
+export default function BonusCard({ bonus }: BonusCardProps) {
+  const { setBonuses } = useBonuses();
   const progress = calculateProgress(bonus);
   const remainingDays = getRemainingDays(bonus);
   const completed = isCompleted(bonus);
   const withdrawable = canWithdraw(bonus);
   const remainingAmount = calculateRemainingAmount(bonus);
 
-  const addDeposit = () => {
-    const amount = parseFloat(prompt("Enter deposit amount:") || "0");
+  const [isAddingDeposit, setIsAddingDeposit] = React.useState(false);
+  const [depositAmount, setDepositAmount] = React.useState("");
+
+  const handleAddDeposit = () => {
+    const amount = parseFloat(depositAmount);
     if (amount > 0) {
       const updatedBonus = {
         ...bonus,
@@ -52,7 +54,11 @@ export default function BonusCard({
           { amount, date: new Date().toISOString() },
         ],
       };
-      onUpdate(updatedBonus);
+      setBonuses((prev) =>
+        prev.map((b) => (b.id === updatedBonus.id ? updatedBonus : b))
+      );
+      setIsAddingDeposit(false);
+      setDepositAmount("");
     }
   };
 
@@ -77,7 +83,9 @@ export default function BonusCard({
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => onDelete(bonus.id)}
+            onClick={() =>
+              setBonuses((prev) => prev.filter((b) => b.id !== bonus.id))
+            }
             className="text-red-500 hover:text-red-700"
           >
             <Trash2 className="h-4 w-4" />
@@ -118,13 +126,32 @@ export default function BonusCard({
         </div>
       </CardContent>
       <CardFooter>
-        <Button 
-          onClick={addDeposit} 
-          className="w-full bg-green-500 hover:bg-green-600" 
-          disabled={completed}
-        >
-          Add Deposit
-        </Button>
+        {isAddingDeposit ? (
+          <div className="flex w-full">
+            <input
+              type="number"
+              value={depositAmount}
+              onChange={(e) => setDepositAmount(e.target.value)}
+              className="flex-1 px-3 py-[0.5625rem] border rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
+              placeholder="Enter amount"
+              autoFocus
+            />
+            <Button
+              onClick={handleAddDeposit}
+              className="rounded-l-none px-3 h-[2.6875rem] bg-background hover:bg-background/90 text-foreground border border-input"
+            >
+              <Check className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={() => setIsAddingDeposit(true)}
+            className="w-full bg-background hover:bg-background/90 text-foreground border border-input"
+            disabled={completed}
+          >
+            Add Deposit
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

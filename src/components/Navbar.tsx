@@ -14,8 +14,8 @@ export function Navbar() {
           <Link href="/" className="hover:text-primary">
             Tracker
           </Link>
-          <Link href="/charts" className="hover:text-primary">
-            Charts
+          <Link href="/analytics" className="hover:text-primary">
+            Analytics
           </Link>
         </div>
       </div>

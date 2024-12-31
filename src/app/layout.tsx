@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { BonusProvider } from "@/context/BonusContext";
 import { Navbar } from "@/components/Navbar";
 import "./globals.css";
 
@@ -33,10 +34,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-1 p-4">{children}</main>
-          </div>
+          <BonusProvider>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-1 p-4">{children}</main>
+            </div>
+          </BonusProvider>
         </ThemeProvider>
       </body>
     </html>
