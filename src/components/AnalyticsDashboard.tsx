@@ -92,7 +92,20 @@ export default function AnalyticsDashboard() {
                     </Badge>
                   </div>
                   <Progress
-                    value={(bonus.deposits.length / 3) * 100} // Example progress calculation
+                    value={(() => {
+                      const { type, totalAmount, eachAmount, count } = bonus.requirements.deposits;
+                      const totalDeposited = bonus.deposits.reduce((sum, deposit) => sum + deposit.amount, 0);
+                      
+                      if (type === 'total') {
+                        return totalAmount ? (totalDeposited / totalAmount) * 100 : 0;
+                      } else if (type === 'each') {
+                        return count ? (bonus.deposits.length / count) * 100 : 0;
+                      } else if (type === 'both') {
+                        const totalRequired = (totalAmount || 0) + ((eachAmount || 0) * (count || 0));
+                        return totalRequired ? (totalDeposited / totalRequired) * 100 : 0;
+                      }
+                      return 0;
+                    })()}
                     className="h-2"
                   />
                 </div>
