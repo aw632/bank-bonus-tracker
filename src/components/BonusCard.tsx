@@ -132,13 +132,13 @@ export default function BonusCard({ bonus }: BonusCardProps) {
               type="number"
               value={depositAmount}
               onChange={(e) => setDepositAmount(e.target.value)}
-              className="flex-1 px-3 py-[0.55rem] border rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
+              className="flex-1 px-3 py-[0.5625rem] border rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
               placeholder="Enter amount"
               autoFocus
             />
             <Button
               onClick={handleAddDeposit}
-              className="rounded-l-none px-3 h-[2.65rem]"
+              className="rounded-l-none px-3 h-[2.6875rem]"
             >
               <Check className="h-4 w-4" />
             </Button>
