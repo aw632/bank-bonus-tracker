@@ -122,7 +122,7 @@ export default function BonusCard({ bonus }: BonusCardProps) {
       <CardFooter>
         <Button
           onClick={addDeposit}
-          className="w-full bg-green-500 hover:bg-green-600"
+          className="w-full"
           disabled={completed}
         >
           Add Deposit
