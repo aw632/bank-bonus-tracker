@@ -1,11 +1,11 @@
-import { Bonus, Deposit } from "../src/types/types";
+import { Bonus, Deposit } from "../../types/types";
 import {
   calculateProgress,
   isCompleted,
   getRemainingDays,
   canWithdraw,
   calculateRemainingAmount,
-} from "../src/utils/bonusUtils";
+} from "../../utils/bonusUtils";
 
 describe("bonusUtils", () => {
   const mockDate = new Date("2024-01-01");
