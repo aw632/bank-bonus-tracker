@@ -58,10 +58,8 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Bank Bonus Tracker</h1>
-        <div className="flex gap-2">
-          <DropdownMenu>
+      <div className="flex justify-end mb-6">
+        <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
@@ -124,9 +122,7 @@ export default function Dashboard() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <ThemeToggle />
         </div>
-      </div>
       <AddBonusForm onAddBonus={addBonus} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {[...bonuses]
