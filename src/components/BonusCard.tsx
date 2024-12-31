@@ -65,7 +65,7 @@ export default function BonusCard({
             <Badge
               variant={
                 bonus.accountType === "Checking"
-                  ? "default"
+                  ? "secondary"
                   : bonus.accountType === "Savings"
                   ? "secondary"
                   : "outline"
@@ -89,7 +89,7 @@ export default function BonusCard({
           <span className="text-2xl font-bold text-green-600">
             ${bonus.amount}
           </span>
-          <Badge variant={completed ? "secondary" : "default"}>
+          <Badge variant={completed ? "secondary" : "secondary"}>
             {completed ? "Completed" : "In Progress"}
           </Badge>{" "}
         </div>
@@ -118,7 +118,11 @@ export default function BonusCard({
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={addDeposit} className="w-full" disabled={completed}>
+        <Button 
+          onClick={addDeposit} 
+          className="w-full bg-green-500 hover:bg-green-600" 
+          disabled={completed}
+        >
           Add Deposit
         </Button>
       </CardFooter>
