@@ -11,12 +11,18 @@ export default function AnalyticsDashboard() {
   // Calculate analytics data
   const totalBonuses = bonuses.length;
   const totalAmount = bonuses.reduce((sum, bonus) => sum + bonus.amount, 0);
-  const totalDeposits = bonuses.reduce(
-    (sum, bonus) =>
-      sum +
-      bonus.deposits.reduce((depositSum, deposit) => depositSum + deposit.amount, 0),
-    0
-  );
+  const totalDeposits = bonuses.reduce((sum, bonus) => {
+    const { type, totalAmount, eachAmount, count } = bonus.requirements.deposits;
+    
+    if (type === 'total') {
+      return sum + (totalAmount || 0);
+    } else if (type === 'each') {
+      return sum + ((eachAmount || 0) * (count || 0));
+    } else if (type === 'both') {
+      return sum + (totalAmount || 0) + ((eachAmount || 0) * (count || 0));
+    }
+    return sum;
+  }, 0);
 
   // Calculate annualized return rate (simplified example)
   const averageBonus = totalBonuses > 0 ? totalAmount / totalBonuses : 0;
