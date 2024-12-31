@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+} from "@radix-ui/react-dropdown-menu";
 
 type SortOption =
   | "recency"
@@ -73,7 +73,7 @@ export default function Dashboard() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48">
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 className="flex items-center justify-between"
                 onClick={() => setSortBy("recency")}
               >
@@ -84,7 +84,9 @@ export default function Dashboard() {
               <DropdownMenuItem
                 className="flex items-center justify-between"
                 onClick={() =>
-                  setSortBy(sortBy === "amount-asc" ? "amount-desc" : "amount-asc")
+                  setSortBy(
+                    sortBy === "amount-asc" ? "amount-desc" : "amount-asc"
+                  )
                 }
               >
                 <span>Amount</span>
