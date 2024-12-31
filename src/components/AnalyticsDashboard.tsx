@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { isCompleted } from "../../utils/bonusUtils";
-import { Pie, PieChart, Label, Tooltip } from "recharts";
+import { Pie, PieChart, Label } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
 
 export default function AnalyticsDashboard() {
   const { bonuses } = useBonuses();
@@ -77,16 +78,18 @@ export default function AnalyticsDashboard() {
             <CardTitle>Bonus Status Breakdown</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <PieChart width={300} height={300}>
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--background))',
-                  borderColor: 'hsl(var(--border))',
-                  borderRadius: 'var(--radius)',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                }}
-                formatter={(value, name) => [`${value}`, name]}
-              />
+            <ChartContainer
+              config={{
+                Completed: { color: 'hsl(var(--chart-1))' },
+                'In Progress': { color: 'hsl(var(--chart-2))' },
+                'Not Started': { color: 'hsl(var(--chart-3))' }
+              }}
+            >
+              <PieChart width={300} height={300}>
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
               <Pie
                 data={[
                   { 
@@ -116,12 +119,37 @@ export default function AnalyticsDashboard() {
                 strokeWidth={3}
               >
                 <Label
-                  value={bonuses.length}
-                  position="center"
-                  className="text-2xl font-bold"
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {bonuses.length.toLocaleString()}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            Bonuses
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
                 />
               </Pie>
-            </PieChart>
+              </PieChart>
+            </ChartContainer>
           </CardContent>
         </Card>
         <Card>
