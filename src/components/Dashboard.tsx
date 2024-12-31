@@ -7,13 +7,19 @@ import BonusCard from "./BonusCard";
 import AddBonusForm from "./AddBonusForm";
 import { ThemeToggle } from "./ui/theme-toggle";
 import { Button } from "./ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
-type SortOption = 'amount-asc' | 'amount-desc' | 'days-asc' | 'days-desc';
+type SortOption = 'recency' | 'amount-asc' | 'amount-desc' | 'days-asc' | 'days-desc' | 'alpha-asc' | 'alpha-desc';
 
 export default function Dashboard() {
   const [bonuses, setBonuses] = useState<Bonus[]>([]);
-  const [sortBy, setSortBy] = useState<SortOption>('amount-desc');
+  const [sortBy, setSortBy] = useState<SortOption>('recency');
 
   useEffect(() => {
     const storedBonuses = localStorage.getItem("bankBonuses");
@@ -47,36 +53,52 @@ export default function Dashboard() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Bank Bonus Tracker</h1>
         <div className="flex gap-2">
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setSortBy(sortBy === 'amount-asc' ? 'amount-desc' : 'amount-asc')}
-              className="flex items-center gap-1"
-            >
-              Amount
-              <ArrowUpDown className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setSortBy(sortBy === 'days-asc' ? 'days-desc' : 'days-asc')}
-              className="flex items-center gap-1"
-            >
-              Days Left
-              <ArrowUpDown className="h-4 w-4" />
-            </Button>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-1">
+                Sort by
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setSortBy('recency')}>
+                Recency
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy(sortBy === 'amount-asc' ? 'amount-desc' : 'amount-asc')}>
+                Amount {sortBy.startsWith('amount') && (sortBy.endsWith('asc') ? '↑' : '↓')}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy(sortBy === 'days-asc' ? 'days-desc' : 'days-asc')}>
+                Days Left {sortBy.startsWith('days') && (sortBy.endsWith('asc') ? '↑' : '↓')}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy(sortBy === 'alpha-asc' ? 'alpha-desc' : 'alpha-asc')}>
+                Alphabetical {sortBy.startsWith('alpha') && (sortBy.endsWith('asc') ? '↑' : '↓')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <ThemeToggle />
         </div>
       </div>
       <AddBonusForm onAddBonus={addBonus} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {[...bonuses].sort((a, b) => {
-          if (sortBy === 'amount-asc') return a.amount - b.amount;
-          if (sortBy === 'amount-desc') return b.amount - a.amount;
-          if (sortBy === 'days-asc') return getRemainingDays(a) - getRemainingDays(b);
-          return getRemainingDays(b) - getRemainingDays(a);
+          switch (sortBy) {
+            case 'recency':
+              return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+            case 'amount-asc':
+              return a.amount - b.amount;
+            case 'amount-desc':
+              return b.amount - a.amount;
+            case 'days-asc':
+              return getRemainingDays(a) - getRemainingDays(b);
+            case 'days-desc':
+              return getRemainingDays(b) - getRemainingDays(a);
+            case 'alpha-asc':
+              return a.bankName.localeCompare(b.bankName);
+            case 'alpha-desc':
+              return b.bankName.localeCompare(a.bankName);
+            default:
+              return 0;
+          }
         }).map((bonus) => (
           <BonusCard
             key={bonus.id}
