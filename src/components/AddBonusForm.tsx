@@ -143,8 +143,8 @@ export default function AddBonusForm({ onAddBonus }: AddBonusFormProps) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`${
-          isOpen ? "bg-destructive hover:bg-destructive/90" : "bg-primary hover:bg-primary/90"
-        } text-primary-foreground px-4 py-2 rounded transition-colors`}
+          isOpen ? "bg-destructive hover:bg-destructive/90" : "bg-background hover:bg-background/90"
+        } text-foreground border border-input px-4 py-2 rounded transition-colors`}
       >
         {isOpen ? "Cancel" : "Add New Bonus"}
       </button>
