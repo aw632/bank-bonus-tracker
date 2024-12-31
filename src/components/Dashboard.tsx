@@ -5,7 +5,6 @@ import { Bonus } from "../../types/types";
 import { getRemainingDays } from "../../utils/bonusUtils";
 import BonusCard from "./BonusCard";
 import AddBonusForm from "./AddBonusForm";
-import { ThemeToggle } from "./ui/theme-toggle";
 import { Button } from "./ui/button";
 import { ChevronDown, CheckCircle2 } from "lucide-react";
 import {
