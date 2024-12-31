@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { isCompleted } from "../../utils/bonusUtils";
-import { Pie, PieChart, Label } from "recharts";
+import { Pie, PieChart, Label, Tooltip } from "recharts";
 
 export default function AnalyticsDashboard() {
   const { bonuses } = useBonuses();
@@ -78,6 +78,15 @@ export default function AnalyticsDashboard() {
           </CardHeader>
           <CardContent className="flex justify-center">
             <PieChart width={300} height={300}>
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: 'hsl(var(--background))',
+                  borderColor: 'hsl(var(--border))',
+                  borderRadius: 'var(--radius)',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
+                formatter={(value, name) => [`${value}`, name]}
+              />
               <Pie
                 data={[
                   { 
@@ -102,8 +111,9 @@ export default function AnalyticsDashboard() {
                 cy="50%"
                 innerRadius={60}
                 outerRadius={100}
-                paddingAngle={5}
-                stroke="none"
+                paddingAngle={0}
+                stroke="hsl(var(--background))"
+                strokeWidth={3}
               >
                 <Label
                   value={bonuses.length}
