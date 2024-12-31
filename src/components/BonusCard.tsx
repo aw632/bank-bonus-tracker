@@ -40,8 +40,11 @@ export default function BonusCard({ bonus }: BonusCardProps) {
   const withdrawable = canWithdraw(bonus);
   const remainingAmount = calculateRemainingAmount(bonus);
 
-  const addDeposit = () => {
-    const amount = parseFloat(prompt("Enter deposit amount:") || "0");
+  const [isAddingDeposit, setIsAddingDeposit] = React.useState(false);
+  const [depositAmount, setDepositAmount] = React.useState("");
+
+  const handleAddDeposit = () => {
+    const amount = parseFloat(depositAmount);
     if (amount > 0) {
       const updatedBonus = {
         ...bonus,
@@ -53,6 +56,8 @@ export default function BonusCard({ bonus }: BonusCardProps) {
       setBonuses((prev) =>
         prev.map((b) => (b.id === updatedBonus.id ? updatedBonus : b))
       );
+      setIsAddingDeposit(false);
+      setDepositAmount("");
     }
   };
 
@@ -120,13 +125,33 @@ export default function BonusCard({ bonus }: BonusCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button
-          onClick={addDeposit}
-          className="w-full"
-          disabled={completed}
-        >
-          Add Deposit
-        </Button>
+        {isAddingDeposit ? (
+          <div className="flex gap-2 w-full">
+            <input
+              type="number"
+              value={depositAmount}
+              onChange={(e) => setDepositAmount(e.target.value)}
+              className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Enter amount"
+              autoFocus
+            />
+            <Button
+              onClick={handleAddDeposit}
+              size="sm"
+              className="px-3"
+            >
+              ✓
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={() => setIsAddingDeposit(true)}
+            className="w-full"
+            disabled={completed}
+          >
+            Add Deposit
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
