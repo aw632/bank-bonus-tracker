@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useBonuses } from "@/context/BonusContext";
 import { Bonus, DepositRequirement } from "../../types/types";
 
 interface AddBonusFormProps {
@@ -9,7 +10,8 @@ interface AddBonusFormProps {
 
 type FormMode = "quick" | "manual" | "review";
 
-export default function AddBonusForm({ onAddBonus }: AddBonusFormProps) {
+export default function AddBonusForm() {
+  const { setBonuses } = useBonuses();
   const [isOpen, setIsOpen] = useState(false);
   const [formMode, setFormMode] = useState<FormMode>("quick");
   const [bonusText, setBonusText] = useState("");
@@ -110,7 +112,7 @@ export default function AddBonusForm({ onAddBonus }: AddBonusFormProps) {
       deposits: [],
     };
 
-    onAddBonus(newBonus);
+    setBonuses((prev) => [...prev, newBonus]);
     setIsOpen(false);
     setFormMode("quick");
     setFormData({

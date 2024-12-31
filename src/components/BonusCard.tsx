@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useBonuses } from "@/context/BonusContext";
 import { Bonus } from "../../types/types";
 import {
   calculateProgress,
@@ -31,11 +32,8 @@ interface BonusCardProps {
   onDelete: (id: string) => void;
 }
 
-export default function BonusCard({
-  bonus,
-  onUpdate,
-  onDelete,
-}: BonusCardProps) {
+export default function BonusCard({ bonus }: BonusCardProps) {
+  const { setBonuses } = useBonuses();
   const progress = calculateProgress(bonus);
   const remainingDays = getRemainingDays(bonus);
   const completed = isCompleted(bonus);
@@ -52,7 +50,9 @@ export default function BonusCard({
           { amount, date: new Date().toISOString() },
         ],
       };
-      onUpdate(updatedBonus);
+      setBonuses((prev) =>
+        prev.map((b) => (b.id === updatedBonus.id ? updatedBonus : b))
+      );
     }
   };
 
@@ -77,7 +77,9 @@ export default function BonusCard({
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => onDelete(bonus.id)}
+            onClick={() =>
+              setBonuses((prev) => prev.filter((b) => b.id !== bonus.id))
+            }
             className="text-red-500 hover:text-red-700"
           >
             <Trash2 className="h-4 w-4" />
