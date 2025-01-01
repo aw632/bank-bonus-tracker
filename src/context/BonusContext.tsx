@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Bonus } from "../../types/types";
+import { Bonus } from "../types/types";
 
 interface BonusContextType {
   bonuses: Bonus[];

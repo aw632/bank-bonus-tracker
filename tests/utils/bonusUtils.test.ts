@@ -1,15 +1,15 @@
-import { Bonus, Deposit } from "../../types/types";
+import { Bonus } from "../../src/types/types";
 import {
   calculateProgress,
   isCompleted,
   getRemainingDays,
   canWithdraw,
   calculateRemainingAmount,
-} from "../../utils/bonusUtils";
+} from "../../src/utils/bonusUtils";
 
 describe("bonusUtils", () => {
   const mockDate = new Date("2024-01-01");
-  
+
   beforeAll(() => {
     jest.useFakeTimers();
     jest.setSystemTime(mockDate);

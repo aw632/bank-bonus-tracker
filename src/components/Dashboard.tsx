@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { useBonuses } from "@/context/BonusContext";
-import { Bonus } from "../../types/types";
-import { getRemainingDays } from "../../utils/bonusUtils";
+import { Bonus } from "../types/types";
+import { getRemainingDays } from "../utils/bonusUtils";
 import BonusCard from "./BonusCard";
 import AddBonusForm from "./AddBonusForm";
 import { Button } from "./ui/button";

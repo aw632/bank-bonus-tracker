@@ -1,4 +1,4 @@
-import { Bonus, Deposit, DepositRequirement } from "../types/types";
+import { Bonus } from "../types/types";
 
 export function calculateProgress(bonus: Bonus): number {
   const { deposits, requirements } = bonus;

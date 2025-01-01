@@ -1,13 +1,13 @@
 import React from "react";
 import { useBonuses } from "@/context/BonusContext";
-import { Bonus } from "../../types/types";
+import { Bonus } from "../types/types";
 import {
   calculateProgress,
   getRemainingDays,
   isCompleted,
   canWithdraw,
   calculateRemainingAmount,
-} from "../../utils/bonusUtils";
+} from "../utils/bonusUtils";
 import {
   Card,
   CardContent,

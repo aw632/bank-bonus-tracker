@@ -4,7 +4,7 @@ import { useBonuses } from "@/context/BonusContext";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
-import { isCompleted } from "../../utils/bonusUtils";
+import { isCompleted } from "../utils/bonusUtils";
 import { Pie, PieChart, Label } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
 
@@ -14,10 +14,16 @@ export default function AnalyticsDashboard() {
   // Calculate analytics data
   const totalBonuses = bonuses.length;
   const totalAmount = bonuses
-    .filter(bonus => isCompleted(bonus))
+    .filter((bonus) => isCompleted(bonus))
     .reduce((sum, bonus) => sum + bonus.amount, 0);
   const totalDeposits = bonuses.reduce((sum, bonus) => {
-    return sum + bonus.deposits.reduce((depositSum, deposit) => depositSum + deposit.amount, 0);
+    return (
+      sum +
+      bonus.deposits.reduce(
+        (depositSum, deposit) => depositSum + deposit.amount,
+        0
+      )
+    );
   }, 0);
 
   // Calculate annualized return rate (simplified example)
@@ -29,7 +35,7 @@ export default function AnalyticsDashboard() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-8">Analytics Dashboard</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <Card className="col-span-2 md:col-span-1">
           <CardHeader>
@@ -46,7 +52,9 @@ export default function AnalyticsDashboard() {
             <CardTitle>Total Bonus Amount</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalAmount.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              ${totalAmount.toLocaleString()}
+            </div>
             <p className="text-sm text-muted-foreground">Earned</p>
           </CardContent>
         </Card>
@@ -56,7 +64,9 @@ export default function AnalyticsDashboard() {
             <CardTitle>Total Deposits</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalDeposits.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              ${totalDeposits.toLocaleString()}
+            </div>
             <p className="text-sm text-muted-foreground">Deposited</p>
           </CardContent>
         </Card>
@@ -80,75 +90,85 @@ export default function AnalyticsDashboard() {
           <CardContent className="flex justify-center items-center h-[300px]">
             <ChartContainer
               config={{
-                Completed: { color: 'hsl(var(--chart-1))' },
-                'In Progress': { color: 'hsl(var(--chart-2))' },
-                'Not Started': { color: 'hsl(var(--chart-3))' }
+                Completed: { color: "hsl(var(--chart-1))" },
+                "In Progress": { color: "hsl(var(--chart-2))" },
+                "Not Started": { color: "hsl(var(--chart-3))" },
               }}
               className="w-full h-full"
             >
-              <PieChart width={300} height={300} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+              <PieChart
+                width={300}
+                height={300}
+                margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+              >
                 <ChartTooltip
                   cursor={false}
                   content={<ChartTooltipContent hideLabel />}
                 />
-              <Pie
-                data={[
-                  { 
-                    name: 'Completed', 
-                    value: bonuses.filter(bonus => isCompleted(bonus)).length,
-                    fill: 'hsl(var(--chart-1))'
-                  },
-                  { 
-                    name: 'In Progress', 
-                    value: bonuses.filter(bonus => !isCompleted(bonus) && bonus.deposits.length > 0).length,
-                    fill: 'hsl(var(--chart-2))'
-                  },
-                  { 
-                    name: 'Not Started', 
-                    value: bonuses.filter(bonus => bonus.deposits.length === 0).length,
-                    fill: 'hsl(var(--chart-3))'
-                  }
-                ]}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={0}
-                stroke="hsl(var(--background))"
-                strokeWidth={3}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
+                <Pie
+                  data={[
+                    {
+                      name: "Completed",
+                      value: bonuses.filter((bonus) => isCompleted(bonus))
+                        .length,
+                      fill: "hsl(var(--chart-1))",
+                    },
+                    {
+                      name: "In Progress",
+                      value: bonuses.filter(
+                        (bonus) =>
+                          !isCompleted(bonus) && bonus.deposits.length > 0
+                      ).length,
+                      fill: "hsl(var(--chart-2))",
+                    },
+                    {
+                      name: "Not Started",
+                      value: bonuses.filter(
+                        (bonus) => bonus.deposits.length === 0
+                      ).length,
+                      fill: "hsl(var(--chart-3))",
+                    },
+                  ]}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={0}
+                  stroke="hsl(var(--background))"
+                  strokeWidth={3}
+                >
+                  <Label
+                    content={({ viewBox }) => {
+                      if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                        return (
+                          <text
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
+                            textAnchor="middle"
+                            dominantBaseline="middle"
                           >
-                            {bonuses.length.toLocaleString()}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            Bonuses
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
-                />
-              </Pie>
+                            <tspan
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              className="fill-foreground text-3xl font-bold"
+                            >
+                              {bonuses.length.toLocaleString()}
+                            </tspan>
+                            <tspan
+                              x={viewBox.cx}
+                              y={(viewBox.cy || 0) + 24}
+                              className="fill-muted-foreground"
+                            >
+                              Bonuses
+                            </tspan>
+                          </text>
+                        );
+                      }
+                    }}
+                  />
+                </Pie>
               </PieChart>
             </ChartContainer>
           </CardContent>
@@ -169,16 +189,27 @@ export default function AnalyticsDashboard() {
                   </div>
                   <Progress
                     value={(() => {
-                      const { type, totalAmount, eachAmount, count } = bonus.requirements.deposits;
-                      const totalDeposited = bonus.deposits.reduce((sum, deposit) => sum + deposit.amount, 0);
-                      
-                      if (type === 'total') {
-                        return totalAmount ? (totalDeposited / totalAmount) * 100 : 0;
-                      } else if (type === 'each') {
-                        return count ? (bonus.deposits.length / count) * 100 : 0;
-                      } else if (type === 'both') {
-                        const totalRequired = (totalAmount || 0) + ((eachAmount || 0) * (count || 0));
-                        return totalRequired ? (totalDeposited / totalRequired) * 100 : 0;
+                      const { type, totalAmount, eachAmount, count } =
+                        bonus.requirements.deposits;
+                      const totalDeposited = bonus.deposits.reduce(
+                        (sum, deposit) => sum + deposit.amount,
+                        0
+                      );
+
+                      if (type === "total") {
+                        return totalAmount
+                          ? (totalDeposited / totalAmount) * 100
+                          : 0;
+                      } else if (type === "each") {
+                        return count
+                          ? (bonus.deposits.length / count) * 100
+                          : 0;
+                      } else if (type === "both") {
+                        const totalRequired =
+                          (totalAmount || 0) + (eachAmount || 0) * (count || 0);
+                        return totalRequired
+                          ? (totalDeposited / totalRequired) * 100
+                          : 0;
                       }
                       return 0;
                     })()}

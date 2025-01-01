@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Bonus, DepositRequirement } from "../../types/types";
+import { Bonus, DepositRequirement } from "../types/types";
 
 interface AddBonusFormProps {
   onAddBonus: (bonus: Bonus) => void;
@@ -143,7 +143,9 @@ export default function AddBonusForm({ onAddBonus }: AddBonusFormProps) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`${
-          isOpen ? "bg-destructive hover:bg-destructive/90" : "bg-background hover:bg-background/90"
+          isOpen
+            ? "bg-destructive hover:bg-destructive/90"
+            : "bg-background hover:bg-background/90"
         } text-foreground border border-input px-4 py-2 rounded transition-colors`}
       >
         {isOpen ? "Cancel" : "Add New Bonus"}
